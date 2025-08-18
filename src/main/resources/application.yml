@@ -1,0 +1,18 @@
+server:
+  port: 9000
+
+spring:
+  application:
+    name: user_service
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/EduRealm
+
+keycloak:
+  auth-server-url: http://localhost:8080
+  realm: EduRealm
+  resource: user-management
+  credentials:
+    secret: EPtFNvBxPbPuxRFWTaUuQb3TyXVyxfNL
