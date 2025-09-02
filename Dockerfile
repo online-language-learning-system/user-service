@@ -1,6 +1,6 @@
 FROM openjdk:17
-COPY target/user_service-0.0.1-SNAPSHOT.jar user_service.jar
-ENTRYPOINT ["java", "-jar", "/user_service.jar"]
+COPY target/user-service-0.0.1-SNAPSHOT.jar user-service.jar
+ENTRYPOINT ["java", "-jar", "/user-service.jar"]
 
 # ENTRYPOINT EXPLANTATION
 # "java"                - Executable - Defines Java runtime will be responsible for execution in Container

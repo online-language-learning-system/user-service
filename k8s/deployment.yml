@@ -1,0 +1,20 @@
+
+#  Use this file to store the Kubernetes Pod manifests for the application.
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-service
+  labels:
+    app: user-service
+spec:
+  selector:
+  template:
+    metadata:
+    spec:
+      containers: # The list of containers in the Pod
+        - name: user-service
+          image: user-service
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 9000

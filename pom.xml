@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.hub</groupId>
-	<artifactId>user_service</artifactId>
+	<artifactId>user-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>user_service</name>
+	<name>user-service</name>
 	<description>User Management Dashboard</description>
 	<url/>
 	<licenses>
@@ -68,7 +68,7 @@
 
 		<dependency>
 			<groupId>com.hub</groupId>
-			<artifactId>common_library</artifactId>
+			<artifactId>common-library</artifactId>
 			<version>${version}</version>
 		</dependency>
 
@@ -76,6 +76,10 @@
 
 	<build>
 		<plugins>
+			<!--
+				Whenever build application with the Spring Boot plugin (spring-boot-maven-plugin),
+				it will package all dependencies (including common-library, other libraries) into a single jar.
+			-->
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>

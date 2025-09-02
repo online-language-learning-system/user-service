@@ -1,8 +1,9 @@
 package com.hub.user_service.controller;
 
 import com.hub.user_service.dto.UserPostDto;
+import com.hub.user_service.dto.UserProfileUpdateDto;
 import com.hub.user_service.service.UserService;
-import com.hub.user_service.viewmodel.UserVm;
+import com.hub.user_service.dto.UserDetailGetDto;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,7 @@ public class UserController {
     }
 
     @GetMapping("/storefront/user/profile")
-    public ResponseEntity<UserVm> getUserProfile() {
+    public ResponseEntity<UserDetailGetDto> getUserProfile() {
         // (OIDC) - SecurityContextHolder.getContext().getAuthentication().getName()
         // return the username of the current user
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -31,16 +32,29 @@ public class UserController {
     }
 
     @GetMapping("/backoffice/users/{userId}")
-    public ResponseEntity<UserVm> getUserByUserId(@PathVariable String userId) {
+    public ResponseEntity<UserDetailGetDto> getUserByUserId(@PathVariable String userId) {
         return ResponseEntity.ok(userService.getUserByUserId(userId));
     }
 
     @PostMapping("/backoffice/users")
-    public ResponseEntity<UserVm> createUser(@RequestBody @Valid UserPostDto userPostDto,
-                                             UriComponentsBuilder uriComponentsBuilder) {
-        UserVm userVm = userService.createNewUser(userPostDto);
-        URI uri = uriComponentsBuilder.replacePath("/users/{id}").buildAndExpand(userVm.id()).toUri();
-        return ResponseEntity.created(uri).body(userVm);
+    public ResponseEntity<UserDetailGetDto> createUser(@RequestBody @Valid UserPostDto userPostDto,
+                                                       UriComponentsBuilder uriComponentsBuilder) {
+        UserDetailGetDto userDetailGetDto = userService.createNewUser(userPostDto);
+        URI uri = uriComponentsBuilder.replacePath("/users/{id}").buildAndExpand(userDetailGetDto.id()).toUri();
+        return ResponseEntity.created(uri).body(userDetailGetDto);
+    }
+
+    @PutMapping("/backoffice/users/profile/{userId}")
+    public ResponseEntity<Void> updateUser(@PathVariable String userId,
+                                           @RequestBody UserProfileUpdateDto userProfileUpdateDto) {
+        userService.updateUserProfileById(userId, userProfileUpdateDto);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/backoffice/users/profile/{userId}")
+    public ResponseEntity<Void> deleteUser(@PathVariable String userId) {
+        userService.deleteUserById(userId);
+        return ResponseEntity.noContent().build();
     }
 
 }

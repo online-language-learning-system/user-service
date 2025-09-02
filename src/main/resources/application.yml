@@ -1,18 +1,21 @@
 server:
   port: 9000
+  shutdown: graceful
 
 spring:
   application:
-    name: user_service
+    name: user-service
+  lifecycle:
+    timeout-per-shutdown-phase: 15s
   security:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8080/realms/EduRealm
+          issuer-uri: http://localhost:8080/realms/CourseRealm
 
 keycloak:
   auth-server-url: http://localhost:8080
-  realm: EduRealm
+  realm: CourseRealm
   resource: user-management
   credentials:
-    secret: EPtFNvBxPbPuxRFWTaUuQb3TyXVyxfNL
+    secret: gPSXGKjuSucPj5smkYGbxgJIEAixM3MT

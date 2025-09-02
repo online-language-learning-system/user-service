@@ -3,10 +3,12 @@ package com.hub.user_service.service;
 import com.hub.common_library.exception.AccessDeniedException;
 import com.hub.common_library.exception.DuplicatedException;
 import com.hub.common_library.exception.ForbiddenException;
+import com.hub.common_library.exception.NotFoundException;
 import com.hub.user_service.config.KeycloakPropsConfig;
 import com.hub.user_service.dto.UserPostDto;
+import com.hub.user_service.dto.UserProfileUpdateDto;
 import com.hub.user_service.utils.Constants;
-import com.hub.user_service.viewmodel.UserVm;
+import com.hub.user_service.dto.UserDetailGetDto;
 import jakarta.ws.rs.core.Response;
 import lombok.extern.slf4j.Slf4j;
 import org.keycloak.admin.client.CreatedResponseUtil;
@@ -35,7 +37,7 @@ public class UserService {
         this.keycloakPropsConfig = keycloakPropsConfig;
     }
 
-    public UserVm getUserProfile(String username) {
+    public UserDetailGetDto getUserProfile(String username) {
         // Get realm
         RealmResource realmResource = keycloak.realm(keycloakPropsConfig.getRealm());
 
@@ -54,7 +56,7 @@ public class UserService {
          */
 
         try {
-            return UserVm.fromUserRepresentation(realmResource.users().get(username).toRepresentation());
+            return UserDetailGetDto.fromUserRepresentation(realmResource.users().get(username).toRepresentation());
         } catch (ForbiddenException exception) {
             throw new AccessDeniedException(
                     String.format(ERROR_FORMAT, exception.getMessage(), keycloakPropsConfig.getResource())
@@ -62,7 +64,7 @@ public class UserService {
         }
     }
 
-    public UserVm getUserByUserId(String userId) {
+    public UserDetailGetDto getUserByUserId(String userId) {
         try {
             // Get realm
             RealmResource realmResource = keycloak.realm(keycloakPropsConfig.getRealm());
@@ -70,7 +72,7 @@ public class UserService {
             // Get User Representation
             UserRepresentation userRepresentation = realmResource.users().get(userId).toRepresentation();
 
-            return UserVm.fromUserRepresentation(userRepresentation);
+            return UserDetailGetDto.fromUserRepresentation(userRepresentation);
         } catch (ForbiddenException exception) {
             throw new AccessDeniedException(
                 String.format(ERROR_FORMAT, exception.getMessage(), keycloakPropsConfig.getResource())
@@ -78,7 +80,7 @@ public class UserService {
         }
     }
 
-    public UserVm createNewUser(UserPostDto userPostDto) {
+    public UserDetailGetDto createNewUser(UserPostDto userPostDto) {
         // Get realm
         RealmResource realmResource = keycloak.realm(keycloakPropsConfig.getRealm());
 
@@ -115,7 +117,35 @@ public class UserService {
         // Method for Assigning Role to User
         assignRole(realmResource, response, userPostDto.role());
 
-        return UserVm.fromUserRepresentation(userRepresentation);
+        return UserDetailGetDto.fromUserRepresentation(userRepresentation);
+    }
+
+    public void updateUserProfileById(String id, UserProfileUpdateDto userProfileUpdateDto) {
+        RealmResource realmResource = keycloak.realm(keycloakPropsConfig.getRealm());
+        UserRepresentation userRepresentation = realmResource.users().get(id).toRepresentation();
+
+        if (userRepresentation == null)
+            throw new NotFoundException(Constants.ErrorCode.USER_NOT_FOUND, id);
+
+        userRepresentation.setFirstName(userProfileUpdateDto.firstName());
+        userRepresentation.setLastName(userProfileUpdateDto.lastName());
+        userRepresentation.setEmail(userProfileUpdateDto.email());
+
+        // Update the user information
+        UserResource userResource = realmResource.users().get(id);
+        userResource.update(userRepresentation);
+    }
+
+    public void deleteUserById(String id) {
+        RealmResource realmResource = keycloak.realm(keycloakPropsConfig.getRealm());
+        UserRepresentation userRepresentation = realmResource.users().get(id).toRepresentation();
+
+        if (userRepresentation == null)
+            throw new NotFoundException(Constants.ErrorCode.USER_NOT_FOUND, id);
+
+        userRepresentation.setEnabled(false);
+        UserResource userResource = realmResource.users().get(id);
+        userResource.update(userRepresentation);
     }
 
     public static CredentialRepresentation createPasswordCredentials(String password) {

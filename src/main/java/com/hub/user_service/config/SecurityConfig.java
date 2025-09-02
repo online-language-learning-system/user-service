@@ -27,7 +27,9 @@ public class SecurityConfig {
         return httpSecurity
                 .authorizeHttpRequests(
                     author ->
-                        author.requestMatchers("/backoffice/**").hasRole("admin")
+                        author
+                                .requestMatchers("/backoffice/users").permitAll()
+                                .requestMatchers("/backoffice/**").hasRole("admin")
                                 .requestMatchers("/storefront/**").permitAll()
                                 .anyRequest().authenticated())
                 .oauth2ResourceServer(oauth2 ->
@@ -50,6 +52,11 @@ public class SecurityConfig {
         JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
         jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(jwtCollectionConverter);
         return jwtAuthenticationConverter;
+
+        /*
+            - JWT included Header, Payload, Signature
+            Claim is a key-value pair in payload
+         */
     }
 
 }

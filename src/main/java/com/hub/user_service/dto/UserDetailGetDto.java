@@ -1,8 +1,8 @@
-package com.hub.user_service.viewmodel;
+package com.hub.user_service.dto;
 
 import org.keycloak.representations.idm.UserRepresentation;
 
-public record UserVm(
+public record UserDetailGetDto(
         String id,
 
         String username,
@@ -13,8 +13,8 @@ public record UserVm(
 
         String lastName
 ) {
-    public static UserVm fromUserRepresentation(UserRepresentation userRepresentation) {
-        return new UserVm(userRepresentation.getId(), userRepresentation.getUsername(),
+    public static UserDetailGetDto fromUserRepresentation(UserRepresentation userRepresentation) {
+        return new UserDetailGetDto(userRepresentation.getId(), userRepresentation.getUsername(),
                 userRepresentation.getEmail(),
                 userRepresentation.getFirstName(), userRepresentation.getLastName()
         );
