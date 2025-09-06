@@ -18,4 +18,4 @@ keycloak:
   realm: CourseRealm
   resource: user-management
   credentials:
-    secret: ${KEYCLOAK_CLIENT_SECRET_USER:gPSXGKjuSucPj5smkYGbxgJIEAixM3MT}
+    secret: ${KEYCLOAK_CLIENT_SECRET_USER:Y4zXYewUrHxbigRv8y82mpDsyW3fpD4B}

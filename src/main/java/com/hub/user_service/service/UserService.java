@@ -117,7 +117,17 @@ public class UserService {
          */
 
         Response response = realmResource.users().create(userRepresentation);
-        log.info("Response at UserService: {}", response.toString());
+
+
+        // Add Logs
+        /*
+        System.out.printf("Response status: %s%n", CreatedResponseUtil.getCreatedId(response));
+
+        if (response.hasEntity()) {
+            String entity = response.readEntity(String.class); // đọc body
+            System.out.printf("Response body: %s%n", entity);
+        }
+        */
 
         // Method for Assigning Role to User
         // assignRole(realmResource, response, userPostDto.role());
@@ -169,9 +179,12 @@ public class UserService {
         String userId = CreatedResponseUtil.getCreatedId(response);
         UserResource userResource = realmResource.users().get(userId);
 
+        realmResource.roles().list().forEach(r -> System.out.println(r.getName()));
+
         // Assign Role to User
         RoleRepresentation roleRepresentation = realmResource.roles().get(role).toRepresentation();
         userResource.roles().realmLevel().add(Collections.singletonList(roleRepresentation));
+
     }
 
     private boolean checkUsernameExists(RealmResource realmResource, UserPostDto userPostDto) {

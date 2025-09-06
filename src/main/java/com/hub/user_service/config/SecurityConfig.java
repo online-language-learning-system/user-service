@@ -28,7 +28,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                     author ->
                         author
-                                .requestMatchers("/backoffice/users").permitAll()
+                                .requestMatchers("/storefront/users").permitAll()
                                 .requestMatchers("/backoffice/**").hasRole("admin")
                                 .requestMatchers("/storefront/**").permitAll()
                                 .anyRequest().authenticated())

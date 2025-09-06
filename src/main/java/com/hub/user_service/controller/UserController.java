@@ -36,12 +36,13 @@ public class UserController {
         return ResponseEntity.ok(userService.getUserByUserId(userId));
     }
 
-    @PostMapping("/backoffice/users")
+    @PostMapping("/storefront/users")
     public ResponseEntity<UserDetailGetDto> createUser(@RequestBody @Valid UserPostDto userPostDto,
-                                                       UriComponentsBuilder uriComponentsBuilder) {
+                                                       UriComponentsBuilder uriComponentsBuilder)
+    {
         UserDetailGetDto userDetailGetDto = userService.createNewUser(userPostDto);
         URI uri = uriComponentsBuilder.replacePath("/users/{id}").buildAndExpand(userDetailGetDto.id()).toUri();
-        return ResponseEntity.created(uri).body(userDetailGetDto);
+        return ResponseEntity.ok(userDetailGetDto);
     }
 
     @PutMapping("/backoffice/users/profile/{userId}")
