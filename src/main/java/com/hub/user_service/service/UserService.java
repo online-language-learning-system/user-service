@@ -81,6 +81,11 @@ public class UserService {
     }
 
     public UserDetailGetDto createNewUser(UserPostDto userPostDto) {
+        
+        if (!userPostDto.password().equals(userPostDto.passwordConfirm())) {
+            throw new DuplicatedException(Constants.ErrorCode.PASSWORD_MISMATCH_ERROR, userPostDto.passwordConfirm());
+        }
+
         // Get realm
         RealmResource realmResource = keycloak.realm(keycloakPropsConfig.getRealm());
 
@@ -98,8 +103,8 @@ public class UserService {
         userRepresentation.setUsername(userPostDto.username());
         userRepresentation.setCredentials(Collections.singletonList(password));
         userRepresentation.setEmail(userPostDto.email());
-        userRepresentation.setFirstName(userPostDto.firstName());
-        userRepresentation.setLastName(userPostDto.lastName());
+        // userRepresentation.setFirstName(userPostDto.firstName());
+        userRepresentation.setLastName(userPostDto.username());
         userRepresentation.setEnabled(true);
 
         /*
@@ -115,7 +120,10 @@ public class UserService {
         log.info("Response at UserService: {}", response.toString());
 
         // Method for Assigning Role to User
-        assignRole(realmResource, response, userPostDto.role());
+        // assignRole(realmResource, response, userPostDto.role());
+
+        // user role
+        assignRole(realmResource, response, "user");
 
         return UserDetailGetDto.fromUserRepresentation(userRepresentation);
     }

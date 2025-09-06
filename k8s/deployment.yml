@@ -9,8 +9,12 @@ metadata:
     app: user-service
 spec:
   selector:
+    matchLabels:
+      app: user-service
   template:
     metadata:
+      labels:
+        app: user-service
     spec:
       containers: # The list of containers in the Pod
         - name: user-service

@@ -10,5 +10,6 @@ public final class Constants {
         public static final String UNAUTHENTICATED = "ACTION FAILED, PLEASE LOGIN";
         public static final String USERNAME_ALREADY_EXITED = "USERNAME_ALREADY_EXITED";
         public static final String USER_WITH_EMAIL_ALREADY_EXITED = "USER_WITH_EMAIL_ALREADY_EXITED";
+        public static final String PASSWORD_MISMATCH_ERROR = "PASSWORD_MISMATCH_ERROR";
     }
 }

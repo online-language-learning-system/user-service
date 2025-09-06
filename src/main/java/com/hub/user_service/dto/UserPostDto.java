@@ -11,16 +11,10 @@ public record UserPostDto (
     String password,
 
     @NotBlank
-    String email,
+    String passwordConfirm,
 
     @NotBlank
-    String firstName,
-
-    @NotBlank
-    String lastName,
-
-    @NotBlank
-    String role
+    String email
 
 ) {
 

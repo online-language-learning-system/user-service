@@ -11,11 +11,11 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8080/realms/CourseRealm
+          issuer-uri: ${KEYCLOAK_ISSUER_URI:http://localhost:8080/realms/CourseRealm}
 
 keycloak:
-  auth-server-url: http://localhost:8080
+  auth-server-url: ${KEYCLOAK_SERVER_URI:http://localhost:8080}
   realm: CourseRealm
   resource: user-management
   credentials:
-    secret: gPSXGKjuSucPj5smkYGbxgJIEAixM3MT
+    secret: ${KEYCLOAK_CLIENT_SECRET_USER:gPSXGKjuSucPj5smkYGbxgJIEAixM3MT}
