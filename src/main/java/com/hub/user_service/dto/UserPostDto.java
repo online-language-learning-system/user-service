@@ -1,6 +1,7 @@
 package com.hub.user_service.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import org.aspectj.weaver.ast.Not;
 
 public record UserPostDto (
 
@@ -14,7 +15,15 @@ public record UserPostDto (
     String passwordConfirm,
 
     @NotBlank
-    String email
+    String email,
+
+    String role,
+
+    @NotBlank
+    String lastName,
+
+    @NotBlank
+    String firstName
 
 ) {
 

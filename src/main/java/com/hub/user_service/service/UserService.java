@@ -103,8 +103,8 @@ public class UserService {
         userRepresentation.setUsername(userPostDto.username());
         userRepresentation.setCredentials(Collections.singletonList(password));
         userRepresentation.setEmail(userPostDto.email());
-        // userRepresentation.setFirstName(userPostDto.firstName());
-        userRepresentation.setLastName(userPostDto.username());
+        userRepresentation.setFirstName(userPostDto.firstName());
+        userRepresentation.setLastName(userPostDto.lastName());
         userRepresentation.setEnabled(true);
 
         /*
@@ -133,7 +133,7 @@ public class UserService {
         // assignRole(realmResource, response, userPostDto.role());
 
         // user role
-        assignRole(realmResource, response, "user");
+        assignRole(realmResource, response, userPostDto.role().toLowerCase());
 
         return UserDetailGetDto.fromUserRepresentation(userRepresentation);
     }
