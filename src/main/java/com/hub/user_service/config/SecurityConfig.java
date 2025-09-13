@@ -34,9 +34,13 @@ public class SecurityConfig {
                                 .requestMatchers("/backoffice/**").hasRole("admin")
                                 .requestMatchers("/storefront/**").permitAll()
                                 .anyRequest().authenticated())
-                .oauth2ResourceServer(oauth2 ->
-                        //oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverterForKeycloak())))
-                        oauth2.jwt(Customizer.withDefaults()))
+                .oauth2ResourceServer(
+                        // Parse token from Authorization: Bearer <token>
+                        // Validate JWT using issuer-uri or jwk-set-uri
+                        // If valid, create JwtAuthenticationToken -> accessible via @AuthenticationPrincipal Jwt
+                    oauth2 ->
+                        oauth2.jwt(Customizer.withDefaults())
+                )
                 .build();
     }
 
