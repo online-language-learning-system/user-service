@@ -19,6 +19,8 @@ jobs:
         with:
           java-version: 17
           distribution: temurin
+          server-id: github
+          settings-path: ${{ github.workspace }}
       - name: Build JAR
         run: mvn clean package -DskipTests
       - name: Upload JAR artifact
