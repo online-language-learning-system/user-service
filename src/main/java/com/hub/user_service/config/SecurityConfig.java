@@ -31,8 +31,8 @@ public class SecurityConfig {
                     author ->
                         author
                                 .requestMatchers("/storefront/users").permitAll()
-                                .requestMatchers("/backoffice/**").hasRole("admin")
                                 .requestMatchers("/storefront/**").permitAll()
+                                .requestMatchers("/backoffice/**").hasRole("admin")
                                 .anyRequest().authenticated())
                 .oauth2ResourceServer(
                         // Parse token from Authorization: Bearer <token>

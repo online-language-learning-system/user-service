@@ -154,6 +154,16 @@ public class UserService {
         userResource.update(userRepresentation);
     }
 
+    public void verifyEmail(String id) {
+        UserRepresentation userRepresentation = new UserRepresentation();
+        userRepresentation.setEmailVerified(true);
+
+        // Update the user information
+        RealmResource realmResource = keycloak.realm(keycloakPropsConfig.getRealm());
+        UserResource userResource = realmResource.users().get(id);
+        userResource.update(userRepresentation);
+    }
+
     public void deleteUserById(String id) {
         RealmResource realmResource = keycloak.realm(keycloakPropsConfig.getRealm());
         UserRepresentation userRepresentation = realmResource.users().get(id).toRepresentation();
