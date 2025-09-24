@@ -30,6 +30,14 @@
 		<java.version>17</java.version>
 		<version>0.0.1-SNAPSHOT</version>
 	</properties>
+
+	<repositories>
+		<repository>
+			<id>github</id>
+			<url>https://maven.pkg.github.com/online-language-learning-system/library</url>
+		</repository>
+	</repositories>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -73,6 +81,8 @@
 		</dependency>
 
 	</dependencies>
+
+	
 
 	<build>
 		<plugins>
