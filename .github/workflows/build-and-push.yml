@@ -20,7 +20,7 @@ jobs:
           java-version: 17
           distribution: temurin
       - name: Build JAR
-        run: mvn clean pacakge -DskipTests
+        run: mvn clean pakage -DskipTests
       - name: Upload JAR artifact
         uses: actions/upload-artifact@v4
         with:
