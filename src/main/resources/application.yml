@@ -1,6 +1,8 @@
 server:
   port: 9000
   shutdown: graceful
+  servlet:
+    context-path: /user-service
 
 spring:
   application:
