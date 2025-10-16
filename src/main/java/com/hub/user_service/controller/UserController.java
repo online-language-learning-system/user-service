@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -58,6 +59,18 @@ public class UserController {
     public ResponseEntity<Void> updateUser(@PathVariable String userId,
                                            @RequestBody UserProfileUpdateDto userProfileUpdateDto) {
         userService.updateUserProfileById(userId, userProfileUpdateDto);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/backoffice/users/{userId}/ban")
+    public ResponseEntity<Void> banUserById(@PathVariable(name = "userId") String userId) {
+        userService.UserBanManagement(userId, true);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/backoffice/users/{userId}/unban")
+    public ResponseEntity<Void> unbanUserById(@PathVariable(name = "userId") String userId) {
+        userService.UserBanManagement(userId, false);
         return ResponseEntity.noContent().build();
     }
 

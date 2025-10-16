@@ -187,6 +187,35 @@ public class UserService {
         userResource.update(userRepresentation);
     }
 
+    public void UserBanManagement(String userId, boolean isBan) {
+        RealmResource realmResource = keycloak.realm(keycloakPropsConfig.getRealm());
+        UserResource userResource = realmResource.users().get(userId);
+
+        if (isBan) {
+            banUser(userResource);
+        } else {
+            unbanUser(userResource);
+        }
+    }
+
+    private void banUser(UserResource userResource) {
+
+        UserRepresentation userRepresentation = userResource.toRepresentation();
+        userRepresentation.setEnabled(false);
+
+        // Same to Repository.save()
+        userResource.update(userRepresentation);
+    }
+
+    private void unbanUser(UserResource userResource) {
+
+        UserRepresentation userRepresentation = userResource.toRepresentation();
+        userRepresentation.setEnabled(true);
+
+        // Same to Repository.save()
+        userResource.update(userRepresentation);
+    }
+
     public void deleteUserById(String id) {
         RealmResource realmResource = keycloak.realm(keycloakPropsConfig.getRealm());
         UserRepresentation userRepresentation = realmResource.users().get(id).toRepresentation();
