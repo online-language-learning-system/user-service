@@ -30,8 +30,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                     author ->
                         author
-                                .requestMatchers("/storefront/users").permitAll()
-                                .requestMatchers("/storefront/**").permitAll()
+                                .requestMatchers("/storefront/**").hasAnyRole("lecturer", "student", "admin")
                                 .requestMatchers("/backoffice/**").hasRole("admin")
                                 .anyRequest().authenticated())
                 .oauth2ResourceServer(

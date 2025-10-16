@@ -1,4 +1,4 @@
-package com.hub.user_service.dto;
+package com.hub.user_service.model.dto;
 
 import org.keycloak.representations.idm.UserRepresentation;
 

@@ -1,10 +1,11 @@
 package com.hub.user_service.controller;
 
-import com.hub.user_service.dto.UserPostDto;
-import com.hub.user_service.dto.UserProfileUpdateDto;
+import com.hub.user_service.model.dto.UserPostDto;
+import com.hub.user_service.model.dto.UserProfileUpdateDto;
 import com.hub.user_service.service.UserService;
-import com.hub.user_service.dto.UserDetailGetDto;
+import com.hub.user_service.model.dto.UserDetailGetDto;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,6 +14,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 
+@Slf4j
 @RestController
 public class UserController {
 
@@ -28,6 +30,7 @@ public class UserController {
         // (OIDC) - SecurityContextHolder.getContext().getAuthentication().getName()
         // return the username of the current user
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        log.info(username);
         return ResponseEntity.ok(userService.getUserProfile(username));
     }
 
