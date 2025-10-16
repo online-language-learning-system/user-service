@@ -15,7 +15,6 @@ spring:
         jwt:
           issuer-uri: ${KEYCLOAK_ISSUER_URI:http://identity:8080/realms/CourseRealm}
 
-
 logging:
   level:
     org:

@@ -1,5 +1,6 @@
 package com.hub.user_service.controller;
 
+import com.hub.user_service.model.dto.UserListGetDto;
 import com.hub.user_service.model.dto.UserPostDto;
 import com.hub.user_service.model.dto.UserProfileUpdateDto;
 import com.hub.user_service.service.UserService;
@@ -23,6 +24,11 @@ public class UserController {
     @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
+    }
+
+    @GetMapping("/backoffice/users")
+    public ResponseEntity<UserListGetDto> getAllUserByRole(@RequestParam(name = "role", defaultValue = "student") String role) {
+        return ResponseEntity.ok(userService.getAllUserByRole(role));
     }
 
     @GetMapping("/storefront/user/profile")

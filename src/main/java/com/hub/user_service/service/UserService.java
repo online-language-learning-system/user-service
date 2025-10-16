@@ -5,23 +5,24 @@ import com.hub.common_library.exception.DuplicatedException;
 import com.hub.common_library.exception.ForbiddenException;
 import com.hub.common_library.exception.NotFoundException;
 import com.hub.user_service.config.KeycloakPropsConfig;
-import com.hub.user_service.model.dto.UserPostDto;
-import com.hub.user_service.model.dto.UserProfileUpdateDto;
+import com.hub.user_service.model.dto.*;
 import com.hub.user_service.utils.Constants;
-import com.hub.user_service.model.dto.UserDetailGetDto;
 import jakarta.ws.rs.core.Response;
 import lombok.extern.slf4j.Slf4j;
 import org.keycloak.admin.client.CreatedResponseUtil;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.resource.RealmResource;
+import org.keycloak.admin.client.resource.RoleResource;
 import org.keycloak.admin.client.resource.UserResource;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.RoleRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @Service
@@ -35,6 +36,28 @@ public class UserService {
     public UserService(Keycloak keycloak, KeycloakPropsConfig keycloakPropsConfig) {
         this.keycloak = keycloak;
         this.keycloakPropsConfig = keycloakPropsConfig;
+    }
+
+    public UserListGetDto getAllUserByRole(String role) {
+        RealmResource realmResource = keycloak.realm(keycloakPropsConfig.getRealm());
+        RoleResource roleResource = realmResource.roles().get(role);
+        RoleRepresentation roleRepresentation = roleResource.toRepresentation();
+
+        Set<UserRepresentation> users = roleResource.getRoleUserMembers(0, 100);
+
+        List<UserInfoGetDto> userInfoGetDtos = new ArrayList<>();
+        users.forEach(
+                user -> {
+                    UserInfoGetDto userInfoGetDto = new UserInfoGetDto(
+                            user.getId(),
+                            user.getUsername(),
+                            user.getEmail()
+                    );
+                    userInfoGetDtos.add(userInfoGetDto);
+                }
+        );
+
+        return new UserListGetDto(userInfoGetDtos);
     }
 
     public UserDetailGetDto getUserProfile(String username) {
