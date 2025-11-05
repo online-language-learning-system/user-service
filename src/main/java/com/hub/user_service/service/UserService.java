@@ -51,7 +51,9 @@ public class UserService {
                     UserInfoGetDto userInfoGetDto = new UserInfoGetDto(
                             user.getId(),
                             user.getUsername(),
-                            user.getEmail()
+                            user.getEmail(),
+                            user.getFirstName(),
+                            user.getLastName()
                     );
                     userInfoGetDtos.add(userInfoGetDto);
                 }
