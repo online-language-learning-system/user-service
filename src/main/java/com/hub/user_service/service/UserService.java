@@ -17,6 +17,8 @@ import org.keycloak.admin.client.resource.UserResource;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.RoleRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -81,7 +83,26 @@ public class UserService {
          */
 
         try {
+            UserResource userResource = realmResource.users().get(username);
+            List<RoleRepresentation> roles = userResource.roles().realmLevel().listAll();
+            roles.forEach(r -> System.out.println("Spec Role: " + r.getName()));
+
             return UserDetailGetDto.fromUserRepresentation(realmResource.users().get(username).toRepresentation());
+        } catch (ForbiddenException exception) {
+            throw new AccessDeniedException(
+                    String.format(ERROR_FORMAT, exception.getMessage(), keycloakPropsConfig.getResource())
+            );
+        }
+    }
+
+    public RoleRepresentation getCurrentRole(String username) {
+        RealmResource realmResource = keycloak.realm(keycloakPropsConfig.getRealm());
+        try {
+            UserResource userResource = realmResource.users().get(username);
+            List<RoleRepresentation> roles = userResource.roles().realmLevel().listAll();
+            roles.forEach(r -> System.out.println("Spec Role: " + r.getName()));
+
+            return roles.get(0);
         } catch (ForbiddenException exception) {
             throw new AccessDeniedException(
                     String.format(ERROR_FORMAT, exception.getMessage(), keycloakPropsConfig.getResource())

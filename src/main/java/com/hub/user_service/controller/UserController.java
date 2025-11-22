@@ -7,6 +7,7 @@ import com.hub.user_service.service.UserService;
 import com.hub.user_service.model.dto.UserDetailGetDto;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.keycloak.representations.idm.RoleRepresentation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,6 +15,7 @@ import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.swing.*;
 import java.net.URI;
 
 @Slf4j
@@ -39,6 +41,15 @@ public class UserController {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         log.info(username);
         return ResponseEntity.ok(userService.getUserProfile(username));
+    }
+
+    @GetMapping("/storefront/user/role")
+    public ResponseEntity<String> getCurrentRoleUser() {
+        // (OIDC) - SecurityContextHolder.getContext().getAuthentication().getName()
+        // return the username of the current user
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        log.info(username);
+        return ResponseEntity.ok(userService.getCurrentRole(username).getName());
     }
 
     @GetMapping("/backoffice/users/{userId}")
