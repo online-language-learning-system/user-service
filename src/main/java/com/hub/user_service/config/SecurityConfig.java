@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
 
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.GrantedAuthority;
@@ -31,10 +32,11 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                     author ->
                         author
+                                .requestMatchers(HttpMethod.POST, "/storefront/users").permitAll()
                                 .requestMatchers("/storefront/**").hasAnyRole("lecturer", "student", "admin")
                                 .requestMatchers("/backoffice/**").hasRole("admin")
-                                .anyRequest().authenticated())
-                .oauth2ResourceServer(
+                                .anyRequest().authenticated()
+                ).oauth2ResourceServer(
                         // Parse token from Authorization: Bearer <token>
                         // Validate JWT using issuer-uri or jwk-set-uri
                         // If valid, create JwtAuthenticationToken -> accessible via @AuthenticationPrincipal Jwt
